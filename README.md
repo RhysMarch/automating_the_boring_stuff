@@ -8,4 +8,4 @@ MacOS --- Creating an exec file.
 
 OR
 
-Just run the court_booking.py file in the current directory of the py file instead of creating an exec file.
+Just run 'python3 court_booking.py' in terminal. 
