@@ -1,19 +1,27 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-import time
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.keys import Keys
+import time
 import schedule
+import logging
+import json
 
 # This program will run every day at 23:59, as bookings are released at 00:00
+
+with open('config.json') as config_file:
+    config = json.load(config_file)
+
+username = config['username']
+password = config['password']
 
 
 def automated_booking():
     # ChromeDriver executable
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
     # Open the booking website
-    driver.get(
-        'https://sportsbookings.ncl.ac.uk/Connect/mrmLogin.aspx')
+    driver.get('https://sportsbookings.ncl.ac.uk/Connect/mrmLogin.aspx')
     driver.maximize_window()
 
     # Login
@@ -24,11 +32,11 @@ def automated_booking():
 
     # Enter username, password then login
     username_field = driver.find_element(By.ID, 'username')
-    username_field.send_keys('c1012902')
+    username_field.send_keys(username)
     password_field = driver.find_element(By.ID, 'password')
-    password_field.send_keys('ToneExperienceEnter18102002')
+    password_field.send_keys(password)
     final_login_button = driver.find_element(By.XPATH, '//*[@id="loginform"]/div[3]/button')
-    final_login_button.click()
+    final_login_button.send_keys(Keys.RETURN)
 
     # Load Volleyball Booking Page
     volleyball_button = driver.find_element(By.XPATH, '//*[@id="ctl00_MainContent__advanceSearchResultsUserControl_Activities_ctrl15_lnkActivitySelect_lg"]')
@@ -41,9 +49,12 @@ def automated_booking():
         next_button.click()
 
 
-schedule.every().day.at("23:59").do(automated_booking)
-
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+# Runs the program every day at 23:59
+try:
+    schedule.every().day.at("23:59").do(automated_booking)
+    while True:
+        schedule.run_pending()  # Constantly checks if it's time to run the program
+        time.sleep(1)
+except Exception as e:
+    logging.exception("An error occurred: %s" % e)
 
