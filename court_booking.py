@@ -18,6 +18,7 @@ password = config['password']
 
 
 def automated_booking():
+    print("Starting automated booking")
     # ChromeDriver executable
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
     # Open the booking website
@@ -57,6 +58,7 @@ try:
     schedule.every().day.at("23:59").do(automated_booking)
     while True:
         schedule.run_pending()  # Constantly checks if it's time to run the program
+        print("Running")
         time.sleep(1)
 except Exception as e:
     logging.exception("An error occurred: %s" % e)
