@@ -48,6 +48,9 @@ def automated_booking():
         next_button = driver.find_element(By.ID, 'ctl00_MainContent_Button2')
         next_button.click()
 
+    # Select the best available slot (I don't want 9am slots lol)
+    # TODO: Implement automation to select the best available slot
+
 
 # Runs the program every day at 23:59
 try:
