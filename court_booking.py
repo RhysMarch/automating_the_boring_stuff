@@ -49,6 +49,9 @@ def automated_booking():
         next_button = driver.find_element(By.ID, 'ctl00_MainContent_Button2')
         next_button.click()
 
+    # At 00:00, refresh the page so that the new bookings are loaded
+    schedule.every().day.at("00:00").do(driver.refresh)
+
     # Select the best available slot (I don't want 9am slots lol)
     # TODO: Implement automation to select the best available slot
 
