@@ -67,6 +67,19 @@ def automated_booking():
         except:
             print(str(slot + 5) + ":00 slot not available")
 
+    # Do it again, the website loads another page after picking your available timeslot, in which you have
+    # pick the time slot again...
+    for slot in range(16, 6, -1):
+        xpath = xpath_base + str(slot) + ']/td/input'
+        try:
+            driver.find_element(By.XPATH, xpath).click()
+        except:
+            print(str(slot + 5) + ":00 slot not available")
+
+    # Click the confirm button
+    confirm_button = driver.find_element(By.ID, 'ctl00_MainContent_btnConfirm')
+    confirm_button.click()
+
 
 # Runs the program every day at 23:59
 try:
