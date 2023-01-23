@@ -18,14 +18,14 @@ password = config['password']
 
 
 def automated_booking():
-    print("Starting automated booking")
+    print("Starting Automated Booking")
     # ChromeDriver executable
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
     # Open the booking website
     driver.get('https://sportsbookings.ncl.ac.uk/Connect/mrmLogin.aspx')
     driver.maximize_window()
 
-    # Login
+    # Login buttons
     login_button = driver.find_element(By.XPATH, '//*[@id="form_1"]/div[1]/div/a')
     login_button.click()
     second_login_button = driver.find_element(By.XPATH, '//*[@id="Authenticate"]/fieldset/div[1]/div[2]/a')
@@ -52,8 +52,20 @@ def automated_booking():
     # At 00:00, refresh the page so that the new bookings are loaded
     schedule.every().day.at("00:00").do(driver.refresh)
 
-    # Select the best available slot (I don't want 9am slots lol)
-    # TODO: Implement automation to select the best available slot
+    # ----------------------------------------------------------------------------------------- #
+    # //*[@id="ctl00_MainContent_grdResourceView"]/tbody/tr[7]/td/input xpath for 12:00 button  #
+    # //*[@id="ctl00_MainContent_grdResourceView"]/tbody/tr[16]/td/input xpath for 21:00 button #
+    # ----------------------------------------------------------------------------------------- #
+
+    xpath_base = '//*[@id="ctl00_MainContent_grdResourceView"]/tbody/tr['
+
+    # Checks 21:00 booking then works down to 12:00, will pick the first available booking
+    for slot in range(16, 6, -1):
+        xpath = xpath_base + str(slot) + ']/td/input'
+        try:
+            driver.find_element(By.XPATH, xpath).click()
+        except:
+            print(str(slot + 5) + ":00 slot not available")
 
 
 # Runs the program every day at 23:59
@@ -65,4 +77,3 @@ try:
         time.sleep(1)
 except Exception as e:
     logging.exception("An error occurred: %s" % e)
-
