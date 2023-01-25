@@ -16,6 +16,8 @@ with open('config.json') as config_file:
 username = config['username']
 password = config['password']
 
+print("Program Started")
+
 
 def automated_booking():
     print("Starting Automated Booking")
@@ -45,12 +47,13 @@ def automated_booking():
     time.sleep(1)  # This sleep is necessary to allow the page to load
 
     # Move ahead 14 days
-    for i in range(14):
+    for i in range(13):
         next_button = driver.find_element(By.ID, 'ctl00_MainContent_Button2')
         next_button.click()
 
     # At 00:00, refresh the page so that the new bookings are loaded
-    schedule.every().day.at("00:00").do(driver.refresh)
+    # schedule.every().day.at("00:00").do(driver.refresh)
+    print("page refreshed")
 
     # ----------------------------------------------------------------------------------------- #
     # //*[@id="ctl00_MainContent_grdResourceView"]/tbody/tr[7]/td/input xpath for 12:00 button  #
@@ -66,18 +69,12 @@ def automated_booking():
             driver.find_element(By.XPATH, xpath).click()
         except:
             print(str(slot + 5) + ":00 slot not available")
+        else:
+            print(str(slot + 5) + ":00 slot took")
+            break
 
-    # Do it again, the website loads another page after picking your available timeslot, in which you have
-    # pick the time slot again...
-    for slot in range(16, 6, -1):
-        xpath = xpath_base + str(slot) + ']/td/input'
-        try:
-            driver.find_element(By.XPATH, xpath).click()
-        except:
-            print(str(slot + 5) + ":00 slot not available")
-
-    # Click the confirm button
-    confirm_button = driver.find_element(By.ID, 'ctl00_MainContent_btnConfirm')
+    # Click the confirm button to take the booking
+    confirm_button = driver.find_element(By.XPATH, '//*[@id="ctl00_MainContent_btnBasket"]')
     confirm_button.click()
 
 
@@ -86,7 +83,6 @@ try:
     schedule.every().day.at("23:59").do(automated_booking)
     while True:
         schedule.run_pending()  # Constantly checks if it's time to run the program
-        print("Running")
         time.sleep(1)
 except Exception as e:
     logging.exception("An error occurred: %s" % e)
