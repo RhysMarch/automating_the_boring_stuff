@@ -8,7 +8,7 @@ import time
 import schedule
 import json
 
-# Username and password are stored in a json file, used for login.
+# Username and password are stored in a json file, used for login process.
 with open('config.json') as config_file:
     config = json.load(config_file)
 
@@ -20,21 +20,16 @@ print(time.strftime("%d %B %Y %H:%M:%S") + " - Program Started")
 
 
 def automated_booking():
-    # print current time
-    print(time.strftime("%H:%M:%S") + " - Booking Process Started")
+    print(time.strftime("%d %B %Y %H:%M:%S") + " - Booking Process Started")
 
-    # ChromeDriver executable
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-    # Open the booking website
-    driver.get('https://sportsbookings.ncl.ac.uk/Connect/mrmLogin.aspx')
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))  # ChromeDriver executable
+    driver.get('https://sportsbookings.ncl.ac.uk/Connect/mrmLogin.aspx')  # Open booking website
 
     # Login buttons
-    login_button = driver.find_element(By.XPATH, '//*[@id="form_1"]/div[1]/div/a')
-    login_button.click()
-    second_login_button = driver.find_element(By.XPATH, '//*[@id="Authenticate"]/fieldset/div[1]/div[2]/a')
-    second_login_button.click()
+    driver.find_element(By.XPATH, '//*[@id="form_1"]/div[1]/div/a').click()
+    driver.find_element(By.XPATH, '//*[@id="Authenticate"]/fieldset/div[1]/div[2]/a').click()
 
-    # Enter username, password then login
+    # Enter username and password, then login
     username_field = driver.find_element(By.ID, 'username')
     username_field.send_keys(username)
     password_field = driver.find_element(By.ID, 'password')
@@ -43,20 +38,21 @@ def automated_booking():
     final_login_button.send_keys(Keys.RETURN)
 
     # Load Volleyball Booking Page
-    volleyball_button = driver.find_element(By.XPATH,
-                                            '//*[@id="ctl00_MainContent__advanceSearchResultsUserControl_Activities_ctrl15_lnkActivitySelect_lg"]')
-    volleyball_button.click()
-    time.sleep(1)  # This sleep is necessary to allow the page to load
+    driver.find_element(By.XPATH, '//*[@id="ctl00_MainContent__advanceSearchResultsUserControl_Activities_ctrl15_lnkActivitySelect_lg"]').click()
+    time.sleep(1)
 
-    # Move ahead 14 days
+    # Move ahead 14 days (New bookings are released 14 days from now)
     for i in range(13):
-        next_button = driver.find_element(By.ID, 'ctl00_MainContent_Button2')
-        next_button.click()
+        driver.find_element(By.ID, 'ctl00_MainContent_Button2').click()
 
-    # At 00:00, refresh the page so that the new bookings are loaded
-    schedule.every().day.at("00:00").do(driver.refresh)
-    print(time.strftime("%H:%M:%S") + " - Refreshing Page")
-    print("------------------------")
+    # Wait until 00:00:00, then refresh page to load new bookings
+    while time.strftime("%H:%M:%S") != "00:00:00":
+        time.sleep(1)
+    driver.refresh()
+    time.sleep(0.5)
+    print(time.strftime("%d %B %Y %H:%M:%S") + """ - Page Refreshed
+    
+----------------------------""")
 
     # ----------------------------------------------------------------------------------------- #
     # //*[@id="ctl00_MainContent_grdResourceView"]/tbody/tr[7]/td/input xpath for 12:00 button  #
@@ -70,25 +66,26 @@ def automated_booking():
         xpath = xpath_base + str(slot) + ']/td/input'
         try:
             driver.find_element(By.XPATH, xpath).click()
+            print(str(slot + 5) + ":00 slot taken")
         except:
-            print(str(slot + 5) + ":00 slot not available")
-        else:
-            print(str(slot + 5) + ":00 slot took")
-            break
+            print("| " + str(slot + 5) + ":00 slot not available |")
 
     # Click the confirm button to take the booking, if no booking is available, the program will go back to waiting for the next day.
     try:
-        confirm_button = driver.find_element(By.XPATH, '//*[@id="ctl00_MainContent_btnBasket"]')
-        confirm_button.click()
+        driver.find_element(By.XPATH, '//*[@id="ctl00_MainContent_btnBasket"]').click()
     except:
-        print("------------------------")
-        print("No bookings available")
+        print("""----------------------------
+        
+    No booking available.
+    Waiting for next day.
+    
+    """)
 
     # Close the browser
     driver.close()
 
 
-# Runs the program every day at 23:59
+# Program idles, until 23:59:59, then starts the booking process.
 try:
     schedule.every().day.at("23:59").do(automated_booking)
     while True:
@@ -96,5 +93,3 @@ try:
         time.sleep(1)
 except KeyboardInterrupt:
     print(time.strftime("%d %B %Y %H:%M:%S") + " - Program Stopped")
-except:
-    print("An error has occurred")
