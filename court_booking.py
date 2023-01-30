@@ -66,12 +66,13 @@ def automated_booking():
         xpath = xpath_base + str(slot) + ']/td/input'
         try:
             driver.find_element(By.XPATH, xpath).click()
-            print(str(slot + 5) + ":00 slot taken")
+            print("| " + str(slot + 5) + ":00 slot taken |")
         except:
             print("| " + str(slot + 5) + ":00 slot not available |")
 
     # Click the confirm button to take the booking, if no booking is available, the program will go back to waiting for the next day.
     try:
+        print("----------------------------")
         driver.find_element(By.XPATH, '//*[@id="ctl00_MainContent_btnBasket"]').click()
     except:
         print("""----------------------------
