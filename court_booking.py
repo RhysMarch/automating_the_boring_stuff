@@ -46,7 +46,7 @@ def automated_booking():
         driver.find_element(By.ID, 'ctl00_MainContent_Button2').click()
 
     # Wait until 00:00:00, then refresh page to load new bookings
-    while time.strftime("%H:%M:%S") != "01:22:00":
+    while time.strftime("%H:%M:%S") != "00:00:00":
         time.sleep(1)
     driver.refresh()
     time.sleep(0.5)
@@ -84,7 +84,7 @@ def automated_booking():
     # Close the browser
     driver.close()
 
-automated_booking()
+
 # Program idles, until 23:59:59, then starts the booking process.
 try:
     schedule.every().day.at("23:59").do(automated_booking)
