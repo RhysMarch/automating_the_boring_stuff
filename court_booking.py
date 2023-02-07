@@ -38,7 +38,7 @@ def automated_booking():
     final_login_button.send_keys(Keys.RETURN)
 
     # Load Volleyball Booking Page
-    driver.find_element(By.XPATH, '//*[@id="ctl00_MainContent__advanceSearchResultsUserControl_Activities_ctrl15_lnkActivitySelect_lg"]').click()
+    driver.find_element(By.XPATH, '/html/body/form/div[3]/div/div/div/section/div[2]/div[1]/div[3]/div/div/div[2]/div[2]/div[47]/div[1]/div/a').click()
     time.sleep(1)
 
     # Move ahead 2 weeks (New bookings are released 14 days from now)
