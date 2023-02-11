@@ -85,7 +85,7 @@ def automated_booking():
     driver.close()
 
 
-# Program idles, until 23:59:59, then starts the booking process.
+# Program idles, until 23:59, then starts the booking process.
 try:
     schedule.every().day.at("23:59").do(automated_booking)
     while True:
