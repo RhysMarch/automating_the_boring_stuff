@@ -42,7 +42,7 @@ def automated_booking():
     time.sleep(1)
 
     # Move ahead 2 weeks (New bookings are released 14 days from now)
-    for i in range(14):
+    for i in range(15):
         driver.find_element(By.ID, 'ctl00_MainContent_Button2').click()
 
     # Wait until 00:00:00, then refresh page to load new bookings
