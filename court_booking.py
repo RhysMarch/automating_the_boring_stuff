@@ -66,8 +66,7 @@ def automated_booking():
         xpath = xpath_base + str(slot) + ']/td/input'
         try:
             driver.find_element(By.XPATH, xpath).click()
-            hour = slot + 12 if slot >= 12 else slot
-            print(f"| {hour}:00 slot taken         |")
+            print("| " + str(slot + 5) + ":00 slot taken         |")
         except:
             print("| " + str(slot + 5) + ":00 slot not available |")
 
