@@ -1,4 +1,7 @@
 {
-    "username": "",
-    "password": ""
+    "email": "",
+    "password": "",
+    "sender-email": "",
+    "recipient-email": "",
+    "sender-password": ""
 }
