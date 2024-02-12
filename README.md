@@ -1,13 +1,21 @@
+# Court Booking Automation
 This is a personal project and isn't intended to be used by people other than me. 
 
-MacOS : Creating an exec file.
+This script automates volleyball court bookings released at midnight. 
+It requires Microsoft Authenticator for login, necessitating human intervention. 
+The rest of the process is automated.
 
-1. Open terminal, go to directory of court_booking.py file.
-2. Run the command 'pyinstaller court_booking.py' 
-3. exec file will be created in the dist file.
+The script only works when I authenticate the 2FA login. This ensures fairness as I'm actively involved in the process and not automating bookings while away. 
+Also, the script doesn't impact my booking success, as I'd achieve the same results manually.
+<br> If 2FA wasn't needed, it would be completely automated.
 
-I have had problems with the exec file not working. It cannot find the config file. So if I want to create a working exec, I need to hardcode the credentials - or find a fix.
+## How it works
 
-OR
-
-Just run the program in the terminal.
+1. You install the requirements in requirements.txt.
+2. You enter your login details in the config.json file.
+3. You run the python file. 
+4. The script will keep checking until it is 23:59. 
+5. Once 23:59, the automation process begins. 
+6. The script opens the booking URL, logs you in with the provided email and password in the config.json file. 
+7. You authenticate the login with microsoft authenticator. 
+8. You are directed to the volleyball booking table and the script checks the available bookings, from 21:00 to 12:00. Picking the latest booking possible.
