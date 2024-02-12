@@ -9,16 +9,49 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from rich import print
 from webdriver_manager.chrome import ChromeDriverManager
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 # Username and password are stored in a json file, used for login process.
 with open('config.json') as config_file:
     config = json.load(config_file)
 
-username = config['username']
-password = config['password']
+email = config['email']  # Email for ncl booking login
+password = config['password']  # Password for ncl booking login
 
 # Print day and time program was started
 print(time.strftime("%d %B %Y %H:%M:%S") + " - Program Started")
+
+
+def send_email_notification(subject, message):
+    sender_email = config['sender-email']
+    sender_password = config['sender-password']
+    recipient_email = config['recipient-email']
+
+    # Set up the email server
+    smtp_server = "outlook.office365.com"
+    smtp_port = 587
+
+    # Create the email message
+    msg = MIMEMultipart()
+    msg['From'] = sender_email
+    msg['To'] = recipient_email
+    msg['Subject'] = subject
+
+    # Attach the message body to the email
+    msg.attach(MIMEText(message, 'plain'))
+
+    # Send the email
+    try:
+        server = smtplib.SMTP(smtp_server, smtp_port)
+        server.starttls()  # Secure the connection
+        server.login(sender_email, sender_password)
+        server.send_message(msg)
+        server.quit()
+        print("Email notification sent successfully!")
+    except Exception as e:
+        print(f"Failed to send email notification: {e}")
 
 
 def automated_booking():
@@ -40,7 +73,7 @@ def automated_booking():
         # Enter username and password, then login
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//input[@id="i0116"]')))
         username_field = driver.find_element(By.XPATH, '//input[@id="i0116"]')
-        username_field.send_keys(username)
+        username_field.send_keys(email)
         driver.find_element(By.XPATH, '//*[@id="idSIButton9"]').click()  # Click the next button
 
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//input[@id="i0118"]')))
@@ -149,6 +182,8 @@ def automated_booking():
         try:
             driver.find_element(By.XPATH, xpath).click()
             print(f"| {slot} slot taken         |")
+            send_email_notification("Court Booking Successful", f"Your court has been booked for {slot}.")
+            break
         except:
             print(f"| {slot} slot not available |")
 
@@ -163,14 +198,15 @@ def automated_booking():
     Waiting for next day.
 
     """)
+    send_email_notification("Court Booking Unavailable", "No booking was available for today.")
 
     # Close the browser
     driver.close()
 
 
-# Program idles, until 23:59, then starts the booking process.
+# Program idles, until 23:55, then starts the booking process.
 try:
-    schedule.every().day.at("23:59").do(automated_booking)
+    schedule.every().day.at("23:55").do(automated_booking)
     while True:
         schedule.run_pending()
         time.sleep(1)
