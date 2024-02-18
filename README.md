@@ -8,6 +8,8 @@ The rest of the process is automated.
 The script only works when I authenticate the 2FA login. This ensures fairness as I'm actively involved in the process and not automating bookings while away. 
 Also, the script doesn't impact my booking success, as I'd achieve the same results manually.
 
+<br>
+
 ## Config.json Settings 
 
 - `email`: This is the email address used for logging into the NCL booking system. It's the username part of your credentials for accessing the booking platform.
@@ -17,6 +19,8 @@ Also, the script doesn't impact my booking success, as I'd achieve the same resu
 - `sender-email`: This is the email address used to send notifications. It's the "From" address in the emails that the script sends. 
 
 - `recipient-email`: This is the email address where you want to receive notifications. It's the "To" address in the emails. This could be the same as `sender-email` if you're sending notifications to yourself.
+
+<br>
 
 
 ## How it works
@@ -28,7 +32,7 @@ Also, the script doesn't impact my booking success, as I'd achieve the same resu
 5. Once 23:55, the automation process begins. 
 6. The script opens the booking URL, logs you in with the provided email and password in the config.json file. 
 7. You authenticate the login with microsoft authenticator. 
-8. You are directed to the volleyball booking table and the script checks the available bookings, from 21:00 to 12:00. Picking the latest booking possible.
+8. You are directed to the volleyball booking table, the script waits til 00:00, refreshes the page and then the script checks the available bookings, from 21:00 to 12:00. Picking the latest booking possible.
 
 <br>
 
