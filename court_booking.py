@@ -189,16 +189,16 @@ def automated_booking():
 
         # Inspect element xpaths for each timeslot buttons
         time_slots_xpaths = {
-            "21:00": '//*[@id="ctl00_MainContent_cal_calbtn98"]',
-            "20:00": '//*[@id="ctl00_MainContent_cal_calbtn91"]',
-            "19:00": '//*[@id="ctl00_MainContent_cal_calbtn84"]',
-            "18:00": '//*[@id="ctl00_MainContent_cal_calbtn77"]',
-            "17:00": '//*[@id="ctl00_MainContent_cal_calbtn70"]',
-            "16:00": '//*[@id="ctl00_MainContent_cal_calbtn63"]',
-            "15:00": '//*[@id="ctl00_MainContent_cal_calbtn56"]',
-            "14:00": '//*[@id="ctl00_MainContent_cal_calbtn49"]',
-            "13:00": '//*[@id="ctl00_MainContent_cal_calbtn42"]',
-            "12:00": '//*[@id="ctl00_MainContent_cal_calbtn35"]'
+            "21:00": '//*[@id="ctl00_MainContent_cal_calbtn99"]',
+            "20:00": '//*[@id="ctl00_MainContent_cal_calbtn92"]',
+            "19:00": '//*[@id="ctl00_MainContent_cal_calbtn85"]',
+            "18:00": '//*[@id="ctl00_MainContent_cal_calbtn78"]',
+            "17:00": '//*[@id="ctl00_MainContent_cal_calbtn71"]',
+            "16:00": '//*[@id="ctl00_MainContent_cal_calbtn64"]',
+            "15:00": '//*[@id="ctl00_MainContent_cal_calbtn57"]',
+            "14:00": '//*[@id="ctl00_MainContent_cal_calbtn50"]',
+            "13:00": '//*[@id="ctl00_MainContent_cal_calbtn43"]',
+            "12:00": '//*[@id="ctl00_MainContent_cal_calbtn36"]'
         }
 
         slot_booked = False
