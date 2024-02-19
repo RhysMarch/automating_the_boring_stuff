@@ -20,6 +20,8 @@ Also, the script doesn't impact my booking success, as I'd achieve the same resu
 
 - `recipient-email`: This is the email address where you want to receive notifications. It's the "To" address in the emails. This could be the same as `sender-email` if you're sending notifications to yourself.
 
+- `sender-password`: This is the sender-email's password, if you use 2FA, it will need to be an app password.
+
 <br>
 
 
