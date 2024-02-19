@@ -53,6 +53,6 @@ Also, the script doesn't impact my booking success, as I'd achieve the same resu
 
 <br>
 
-### Assumptions
+### Problems
 
-The email receiving only works with outlook right now.
+The email receiving only works with Outlook right now.
